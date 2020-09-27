@@ -51,3 +51,12 @@ def bit_sum(bits_one, bits_two):
         return "{0:b}".format(res)
     except:
         return None 
+
+def bit_resta(bits_one, bits_two):
+    try:
+        A = bits(bits_one)
+        B = bits(bits_two)
+        res = A - B
+        return "{0:b}".format(res)
+    except:
+        return None 

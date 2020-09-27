@@ -39,6 +39,8 @@ print("    xor: \t\t{}".format(operations.bit_xor(bits_one, bits_two)))
 
 print("    sum: \t\t{}".format(operations.bit_sum(bits_one, bits_two)))
 
+print("    resta: \t\t{}".format(operations.bit_resta(bits_one, bits_two)))
+
 
 """
 Creado por:
