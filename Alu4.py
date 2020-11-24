@@ -2,33 +2,38 @@ from bitarray import bitarray
 
 
 class Alu4:
-    def __init__(self, clk, a, b, cs):
-        self.clk = clk  # 1 bit
-        self.a = bitarray(a)  # 4 bits
-        self.b = bitarray(b)  # 4 bits
-        self.cs = cs  # 5 bits
-        self.operacion = bitarray('0000')
-        self.rc = bitarray('0000')
+    # def __init__(self, clk, a, b, cs):
+        # self.clk = clk  # 1 bit
+        # self.a = bitarray(a)  # 4 bits
+        # self.b = bitarray(b)  # 4 bits
+        # self.cs = cs  # 5 bits
+        # self.operacion = bitarray('0000')
+        # self.rc = bitarray('0000')
+    def __init__(self):
+        print("init: {}".format(self.__class__))
 
-    def sumar(self):
+    def run(self, variables):
         cout = bitarray('0')
         cl = bitarray('00')
         negative = False
 
-        if self.clk == '1':
-            if self.cs == '00001':
-                a = int(self.a.to01(), 2)
-                b = int(self.b.to01(), 2)
+        if variables.clk == '1':
+            if variables.cs == '00001':
+                a = int(variables.a.to01(), 2)
+                b = int(variables.b.to01(), 2)
 
-                self.operacion = bitarray(format((a + b), '04b'))
+                variables.operacion = bitarray(format((a + b), '04b'))
 
-                cl[0] = (self.a[1] & self.b[1]) | (self.a[0] & self.b[0]) & (self.a[1] ^ self.b[1] )
-                cl[1] = (self.a[2] & self.b[2]) | (cl[0] & (self.a[2] ^ self.b[2]))
-                cout[0] = (self.a[3] & self.b[3]) | (cl[1] & (self.a[3] ^ self.b[3]))
+                cl[0] = (variables.a[1] & variables.b[1]) | (
+                    variables.a[0] & variables.b[0]) & (variables.a[1] ^ variables.b[1])
+                cl[1] = (variables.a[2] & variables.b[2]) | (
+                    cl[0] & (variables.a[2] ^ variables.b[2]))
+                cout[0] = (variables.a[3] & variables.b[3]) | (
+                    cl[1] & (variables.a[3] ^ variables.b[3]))
 
-            elif self.cs == '00010':
-                a = int(self.a.to01(), 2)
-                b = int(self.b.to01(), 2)
+            elif variables.cs == '00010':
+                a = int(variables.a.to01(), 2)
+                b = int(variables.b.to01(), 2)
                 f = format((a - b), '05b')
 
                 if f.startswith('-'):
@@ -36,46 +41,47 @@ class Alu4:
                     negative = True
 
                 print(f)
-                self.operacion = bitarray(f)
-                if (self.a > self.b):
+                variables.operacion = bitarray(f)
+                if (variables.a > variables.b):
                     cout[0] = '1'
                     cl[0] = '1'
                 else:
                     cout[0] = '0'
                     cl[0] = '0'
 
-            elif self.cs == '00011':
-                self.operacion = (self.a & self.b)
+            elif variables.cs == '00011':
+                variables.operacion = (variables.a & variables.b)
                 cout[0] = '0'
                 cl[0] = '0'
 
-            elif self.cs == '00100':
-                self.operacion = (self.a | self.b)
+            elif variables.cs == '00100':
+                variables.operacion = (variables.a | variables.b)
                 cout[0] = '0'
                 cl[0] = '0'
 
-            elif self.cs == '00101':
-                self.operacion = (~self.a)
+            elif variables.cs == '00101':
+                variables.operacion = (~variables.a)
                 cout[0] = '0'
                 cl[0] = '0'
 
-            elif self.cs == '00110':
-                self.operacion = (self.a ^ self.b)
+            elif variables.cs == '00110':
+                variables.operacion = (variables.a ^ variables.b)
                 cout[0] = '0'
                 cl[0] = '0'
 
-            elif self.cs == '00111':
-                self.operacion = (self.a & bitarray('1111'))
+            elif variables.cs == '00111':
+                variables.operacion = (variables.a & bitarray('1111'))
                 cout[0] = cout[0]
                 cl[0] = cl[0]
 
-        self.rc[3] = cout[0] ^ cl[1]
-        self.rc[2] = ~(self.operacion[3] | self.operacion[2] | self.operacion[1] | self.operacion[0])
-        self.rc[1] = self.operacion[3]
-        self.rc[0] = cout[0]
+        variables.rc[3] = cout[0] ^ cl[1]
+        variables.rc[2] = ~(variables.operacion[3] | variables.operacion[2]
+                            | variables.operacion[1] | variables.operacion[0])
+        variables.rc[1] = variables.operacion[3]
+        variables.rc[0] = cout[0]
 
-        rc = self.rc.to01()
-        operacion = self.operacion.to01()
+        rc = variables.rc.to01()
+        operacion = variables.operacion.to01()
 
         if negative:
             operacion = '-' + operacion

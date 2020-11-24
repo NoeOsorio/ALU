@@ -2,26 +2,14 @@ from bitarray import bitarray
 
 
 class Index:
-    def __init_(self, clk, pcontrol, cs, reset):
-        self.clk = clk
-        self.pcontrol = bitarray(pcontrol)  # 8 bits
-        self.cs = cs  # 5 bits
-        self.reset = reset
-        self.ix = bitarray('00000000')  # 8 bits
+    def __init__(self):
+        print("init: {}".format(self.__class__))
 
-    def arq_indice(self):
-        if self.reset == '1':
-            self.ix = bitarray('00000000')
-        else:
+    def run(self, variables):
+        if variables.cs == '11010':
+            variables.ix = variables.pcontrol
 
-            if self.clk == '1':
-
-                if self.cs == '11010':
-                    self.ix = self.pcontrol
-
-                elif self.cs == '11011':
-                    ix = int(self.ix.to01(), 2)
-                    self.ix = bitarray(format((ix + 1), 'b'))
-
-        return self.ix.to01()
-
+        elif variables.cs == '11011':
+            ix = int(variables.ix.to01(), 2)
+            variables.ix = bitarray(format((ix + 1), 'b'))
+        return variables.ix.to01()

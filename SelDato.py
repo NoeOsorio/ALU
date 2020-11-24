@@ -2,20 +2,20 @@ from bitarray import bitarray
 
 
 class SelDato:
-    def __init__(self, clk, cs, datoin, datout, operacion):
-        self.clk = clk
-        self.cs = cs  # 5 bits
-        self.datoin = bitarray(datoin)  # 4 bits
-        self.datout = bitarray(datout)  # 4 bits
-        self.operacion = bitarray(operacion)  # 4 bits
+    # def __init__(self, clk, cs, datoin, datout, operacion):
+    #     self.clk = clk
+    #     self.cs = cs  # 5 bits
+    #     self.datoin = bitarray(datoin)  # 4 bits
+    #     self.datout = bitarray(datout)  # 4 bits
+    #     self.operacion = bitarray(operacion)  # 4 bits
+    def __init__(self):
+        print("init: {}".format(self.__class__))
 
-    def arq_sel_dato(self):
-        if self.clk == '1':
+    def run(self, variables):
+        if variables.cs == '10110':
+            variables.datoin = variables.datout
 
-            if self.cs == '10110':
-                self.datoin = self.datout
+        elif variables.cs == '10101':
+            variables.datoin = variables.operacion
 
-            elif self.cs == '10101':
-                self.datoin = self.operacion
-
-        return self.datoin.to01()
+        return variables.datoin.to01()
