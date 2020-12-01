@@ -1,6 +1,24 @@
 from bitarray import bitarray
 
 
+def suma(a, b):
+    a = int(a.to01(), 2)
+    b = int(b.to01(), 2)
+    return bitarray(format((a + b), '04b'))
+
+
+def resta(a, b):
+    a = int(a.to01(), 2)
+    b = int(b.to01(), 2)
+    f = format((a - b), '05b')
+
+    if f.startswith('-'):
+        f = f.replace('-', '')
+        negative = True
+        print(f)
+    return bitarray(f)
+
+
 class Alu4:
     # def __init__(self, clk, a, b, cs):
         # self.clk = clk  # 1 bit
