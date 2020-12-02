@@ -11,9 +11,11 @@ class SelDir:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
-        if variables.cs == '11000':
-            variables.direccion = variables.ix
+    def run(self, v):
+        if v["cs"] == bitarray('11000'):
+            v["direccion"] = v["ix"]
         else:
-            variables.direccion = variables.pcout
-        return variables.direccion.to01()
+            v["direccion"] = v["pcout"]
+
+        print("direccion <= {}".format(v["direccion"]))
+        return v["direccion"].to01()

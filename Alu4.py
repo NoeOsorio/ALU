@@ -30,78 +30,81 @@ class Alu4:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
+    def run(self, v):
         cout = bitarray('0')
         cl = bitarray('00')
         negative = False
 
-        if variables.clk == '1':
-            if variables.cs == '00001':
-                a = int(variables.a.to01(), 2)
-                b = int(variables.b.to01(), 2)
+        if v["cs"] == bitarray('00001'):
+            a = int(v["a"].to01(), 2)
+            b = int(v["b"].to01(), 2)
 
-                variables.operacion = bitarray(format((a + b), '04b'))
+            v["operacion"] = bitarray(format((a + b), '04b'))
 
-                cl[0] = (variables.a[1] & variables.b[1]) | (
-                    variables.a[0] & variables.b[0]) & (variables.a[1] ^ variables.b[1])
-                cl[1] = (variables.a[2] & variables.b[2]) | (
-                    cl[0] & (variables.a[2] ^ variables.b[2]))
-                cout[0] = (variables.a[3] & variables.b[3]) | (
-                    cl[1] & (variables.a[3] ^ variables.b[3]))
+            cl[0] = (v["a"][1] & v["b"][1]) | (
+                v["a"][0] & v["b"][0]) & (v["a"][1] ^ v["b"][1])
+            cl[1] = (v["a"][2] & v["b"][2]) | (
+                cl[0] & (v["a"][2] ^ v["b"][2]))
+            cout[0] = (v["a"][3] & v["b"][3]) | (
+                cl[1] & (v["a"][3] ^ v["b"][3]))
 
-            elif variables.cs == '00010':
-                a = int(variables.a.to01(), 2)
-                b = int(variables.b.to01(), 2)
-                f = format((a - b), '05b')
+        elif v["cs"] == bitarray('00010'):
+            a = int(v["a"].to01(), 2)
+            b = int(v["b"].to01(), 2)
+            f = format((a - b), '05b')
 
-                if f.startswith('-'):
-                    f = f.replace('-', '')
-                    negative = True
+            if f.startswith('-'):
+                f = f.replace('-', '')
+                negative = True
 
-                print(f)
-                variables.operacion = bitarray(f)
-                if (variables.a > variables.b):
-                    cout[0] = '1'
-                    cl[0] = '1'
-                else:
-                    cout[0] = '0'
-                    cl[0] = '0'
-
-            elif variables.cs == '00011':
-                variables.operacion = (variables.a & variables.b)
+            print(f)
+            v["operacion"] = bitarray(f)
+            if (v["a"] > v["b"]):
+                cout[0] = '1'
+                cl[0] = '1'
+            else:
                 cout[0] = '0'
                 cl[0] = '0'
 
-            elif variables.cs == '00100':
-                variables.operacion = (variables.a | variables.b)
-                cout[0] = '0'
-                cl[0] = '0'
+        elif v["cs"] == bitarray('00011'):
+            v["operacion"] = (v["a"] & v["b"])
+            cout[0] = '0'
+            cl[0] = '0'
 
-            elif variables.cs == '00101':
-                variables.operacion = (~variables.a)
-                cout[0] = '0'
-                cl[0] = '0'
+        elif v["cs"] == bitarray('00100'):
+            v["operacion"] = (v["a"] | v["b"])
+            cout[0] = '0'
+            cl[0] = '0'
 
-            elif variables.cs == '00110':
-                variables.operacion = (variables.a ^ variables.b)
-                cout[0] = '0'
-                cl[0] = '0'
+        elif v["cs"] == bitarray('00101'):
+            v["operacion"] = (~v["a"])
+            cout[0] = '0'
+            cl[0] = '0'
 
-            elif variables.cs == '00111':
-                variables.operacion = (variables.a & bitarray('1111'))
-                cout[0] = cout[0]
-                cl[0] = cl[0]
+        elif v["cs"] == bitarray('00110'):
+            v["operacion"] = (v["a"] ^ v["b"])
+            cout[0] = '0'
+            cl[0] = '0'
 
-        variables.rc[3] = cout[0] ^ cl[1]
-        variables.rc[2] = ~(variables.operacion[3] | variables.operacion[2]
-                            | variables.operacion[1] | variables.operacion[0])
-        variables.rc[1] = variables.operacion[3]
-        variables.rc[0] = cout[0]
+        elif v["cs"] == bitarray('00111'):
+            v["operacion"] = (v["a"] & bitarray('1111'))
+            cout[0] = cout[0]
+            cl[0] = cl[0]
 
-        rc = variables.rc.to01()
-        operacion = variables.operacion.to01()
+        else:
+            return
+
+        v["rc"][3] = cout[0] ^ cl[1]
+        v["rc"][2] = ~(v["operacion"][3] | v["operacion"][2]
+                       | v["operacion"][1] | v["operacion"][0])
+        v["rc"][1] = v["operacion"][3]
+        v["rc"][0] = cout[0]
+
+        rc = v["rc"].to01()
+        operacion = v["operacion"].to01()
 
         if negative:
             operacion = '-' + operacion
-
+        print("operacion <= {}".format(v["operacion"]))
+        print("rc <= {}".format(v["rc"]))
         return rc, operacion

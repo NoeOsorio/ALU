@@ -6,8 +6,11 @@ class Stack:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
-        q = bitarray('00000000')
-        if variables.cs == '11100':
-            variables.pila = variables.pcout
-        return variables.pila.to01()
+    def run(self, v):
+
+        if v["cs"] == bitarray('11100'):
+            v["pila"] = v["pcout"]
+        else:
+            return
+        print("pila <= {}".format(v["pila"]))
+        return v["pila"].to01()

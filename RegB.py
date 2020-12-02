@@ -12,14 +12,18 @@ class RegB:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
-        if variables.cs == '10010':
-            variables.b = variables.datoin
+    def run(self, v):
+        if v["cs"] == bitarray('10010'):
+            v["b"] = v["datoin"]
 
-        elif variables.cs == '11100':
-            variables.bres = variables.b
+        elif v["cs"] == bitarray('11100'):
+            v["bres"] = v["b"]
 
-        elif variables.cs == '11101':
-            variables.b = variables.bres
+        elif v["cs"] == bitarray('11101'):
+            v["b"] = v["bres"]
 
-        return variables.b.to01()
+        else:
+            return
+
+        print("b <= {}".format(v["b"]))
+        return v["b"].to01()

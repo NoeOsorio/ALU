@@ -15,8 +15,27 @@ from UnitControl import Unit_Control
 
 variables = {}
 
+instrucciones = ["0000",
+                 "0001",
+                 "0010",
+                 "0011",
+                 "0100",
+                 "0101",
+                 "0110",
+                 "0111",
+                 "1000",
+                 "1001",
+                 "1010",
+                 "1011",
+                 "1100",
+                 "1101",
+                 "1110",
+                 "1111",
+                 ]
+
 
 def reset():
+    print("\nReset\n")
     # Interrupción
     variables["irq"] = bitarray('00')
     # Clock
@@ -45,6 +64,14 @@ def reset():
     variables["q"] = 0
     # RE
     variables["re"] = bitarray('0000')
+    # RC
+    variables["rc"] = bitarray('0000')
+    # Operacion
+    variables["operacion"] = bitarray('0000')
+    # Datoin
+    variables["datoin"] = bitarray('0000')
+    # Datout
+    variables["datout"] = bitarray('0000')
 
 
 pc = PC()
@@ -64,6 +91,9 @@ def run(instruction=None, state=0):
     if instruction == None:
         pass
     else:
+
+        print("<<Instrucción: {}>>\n".format(instruction))
+        instruction = bitarray(instruction)
         if instruction == bitarray('0000'):
             alu.run(variables)
             sel_dato.run(variables)
@@ -134,44 +164,44 @@ def run(instruction=None, state=0):
             sel_dir.run(variables)
             tri_est.run(variables)
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             pass
         elif instruction == bitarray('1010'):
             ix.run(variables)
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             pass
         elif instruction == bitarray('1011'):
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             # Salto que no se que rayos es
             pc.run(variables)
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             pass
         elif instruction == bitarray('1100'):
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             # Salto que no se que rayos es
             pc.run(variables)
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             pass
         elif instruction == bitarray('1101'):
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             # Salto que no se que rayos es
             pc.run(variables)
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             pass
         elif instruction == bitarray('1110'):
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             # Salto que no se que rayos es
             pc.run(variables)
             pc.run(variables)
-            sel_dato(variables)
+            sel_dato.run(variables)
             pass
         elif instruction == bitarray('1111'):
             pc.run(variables)
@@ -181,7 +211,14 @@ def run(instruction=None, state=0):
             sel_dato.run(variables)
             pass
         unit_control.run(variables)
+        print("=============================")
 
 
-reset()
-run("1001")
+def init():
+    print("\nProcesador de Maxines\n")
+    reset()
+    for instruction in instrucciones:
+        run(instruction)
+
+
+init()

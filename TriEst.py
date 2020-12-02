@@ -10,13 +10,15 @@ class TriEst:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self):
-        if self.cs == '11000':
-            self.datout = self.operacion
+    def run(self, v):
+        if v["cs"] == bitarray('11000'):
+            v["datout"] = v["operacion"]
 
         else:
                 # el libro lo pone asi:
-                # self.datout = 'ZZZZ'
+                # v.datout = 'ZZZZ'
                 # pero no se que significan las Z
-            self.datout = bitarray('0000')
-        return self.datout.to01()
+            v["datout"] = bitarray('0000')
+
+        print("pcout <= {}".format(v["pcout"]))
+        return v["datout"].to01()

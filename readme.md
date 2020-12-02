@@ -7,4 +7,19 @@
 [x] Sel-Dir
 [x] Dir-Val
 [x] Alu
-[] Unidad de Control
+[x] Unidad de Control
+
+### Intrucciones
+
+Para poder correr este programa basta con colocar la lista de instrucciones en el
+objeto "instrucciones" del archivo _processor.py_ el cual es una lista de Strings.
+
+### Correr el programa
+
+Una vez colocadas las instrucciones, se guarda el archivo y se ejecuta con el comando
+en terminal:
+`$ python processor.py`
+
+### Salida de programa
+
+El programa dará una salida con los cambios de las variables de cada bloque, según sea la instrucción

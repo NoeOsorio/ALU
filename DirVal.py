@@ -8,8 +8,10 @@ class DirVal:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
-        vma = (~(variables.cs[3]) & variables.cs[2] & variables.cs[1] & ~(variables.cs[0])) | (
-            variables.cs[3] & ~(variables.cs[2]) & ~(variables.cs[1]) & ~(variables.cs[0]))
-        variables["vma"] = vma
+    def run(self, v):
+        v["vma"] = bitarray('0')
+        vma = (~(v["cs"][3]) & v["cs"][2] & v["cs"][1] & ~(v["cs"][0])) | (
+            v["cs"][3] & ~(v["cs"][2]) & ~(v["cs"][1]) & ~(v["cs"][0]))
+        v["vma"] = vma
+        print("vma <= {}".format(v["vma"]))
         return vma.to01()

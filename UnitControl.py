@@ -7,7 +7,7 @@ class Unit_Control:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    # def q_0(self, variables):
+    # def q_0(self, v):
     def run(self, v):
         if v["q"] == 0:
             if v["irq"] == bitarray('10'):

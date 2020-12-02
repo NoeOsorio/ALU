@@ -5,13 +5,18 @@ class RegA:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
-        if variables.cs == '10001':
-            variables.a = variables.datoin
+    def run(self, v):
+        if v["cs"] == bitarray('10001'):
+            v["a"] = v["datoin"]
 
-        elif variables.cs == '11100':
-            variables.ares = variables.a
+        elif v["cs"] == bitarray('11100'):
+            v["ares"] = v["a"]
 
-        elif variables.cs == '11101':
-            variables.a = variables.ares
-        return variables.a.to01()
+        elif v["cs"] == bitarray('11101'):
+            v["a"] = v["ares"]
+
+        else:
+            return
+
+        print("a <= {}".format(v["a"]))
+        return v["a"].to01()

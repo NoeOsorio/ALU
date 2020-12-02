@@ -11,11 +11,15 @@ class SelDato:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
-        if variables.cs == '10110':
-            variables.datoin = variables.datout
+    def run(self, v):
+        if v["cs"] == bitarray('10110'):
+            v["datoin"] = v["datout"]
 
-        elif variables.cs == '10101':
-            variables.datoin = variables.operacion
+        elif v["cs"] == bitarray('10101'):
+            v["datoin"] = v["operacion"]
 
-        return variables.datoin.to01()
+        else:
+            return
+
+        print("datoin <= {}".format(v["datoin"]))
+        return v["datoin"].to01()

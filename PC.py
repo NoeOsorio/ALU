@@ -12,16 +12,19 @@ class PC:
     def __init__(self):
         print("init: {}".format(self.__class__))
 
-    def run(self, variables):
-        if variables.clk.to01() == '1':
-            if variables.cs.to01() == '11110':
-                variables.pcout = variables.pcontrol
+    def run(self, v):
 
-            elif variables.cs.to01() == '11111':
-                pcout = int(variables.pcout.to01(), 2)
-                variables.pcout = bitarray(format((pcout + 1), 'b'))
+        if v["cs"].to01() == bitarray('11110'):
+            v["pcout"] = v["pcontrol"]
 
-            elif variables.cs.to01() == '11101':
-                variables.pcout = variables.pila
+        elif v["cs"].to01() == bitarray('11111'):
+            pcout = int(v["pcout"].to01(), 2)
+            v["pcout"] = bitarray(format((pcout + 1), 'b'))
 
-        return variables.pcout.to01()
+        elif v["cs"].to01() == bitarray('11101'):
+            v["pcout"] = v["pila"]
+
+        else:
+            return
+        print("pcout <= {}".format(v["pcout"]))
+        return v["pcout"].to01()
